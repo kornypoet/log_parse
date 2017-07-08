@@ -1,0 +1,3 @@
+# these are a few randomly generated log lines to aid in testing
+2017-03-19T05:01:27.173Z 204.18.135.54:42860 10.31.0.5:8080 200 "GET https://api.chargeio.com:443/v1/events HTTP/1.1" "-" ECDHE-RSA-AES128-GCM-SHA256 TLSv1.2
+2017-03-19T05:02:02.554Z 52.34.86.123:41649 10.0.12.108:8080 200 "GET https://api.chargeio.com:443/v1/transactions?start_date=2017-03-17T05%3A02%3A01.77Z&end_date=2017-03-19T05%3A02%3A01.77Z HTTP/1.1" "ChargeIO PHP Client v1.0.0" AES256-SHA TLSv1
