@@ -1,9 +1,10 @@
 require 'spec_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe LogParse::Runner do
   let(:logfile){ StringIO.new "line one\nline two\n line three" }
-  let(:count)  { :foo }
-  let(:filter) { { bar: 'baz' } }
+  let(:count){ :foo }
+  let(:filter){ { bar: 'baz' } }
 
   subject{ described_class.new(logfile, count, filter) }
 
@@ -22,10 +23,10 @@ RSpec.describe LogParse::Runner do
   end
 
   context '#invoke' do
-    let(:parser)  { double }
-    let(:error)   { {} }
+    let(:parser){ double }
+    let(:error){ {} }
     let(:matching){ { foo: 'qix', bar: 'baz' } }
-    let(:missing) { { foo: 'qix', bar: 'missing' } }
+    let(:missing){ { foo: 'qix', bar: 'missing' } }
 
     before do
       allow(subject).to receive(:parser){ parser }

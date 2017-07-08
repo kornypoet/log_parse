@@ -1,6 +1,7 @@
 require 'optparse'
 
 module LogParse
+  # Runner class handles parsing options and output
   class Runner
     class << self
       def debug(msg)
@@ -15,6 +16,7 @@ module LogParse
         }
       end
 
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def optparse
         @optparse ||= OptionParser.new do |opts|
           opts.version = LogParse::VERSION
@@ -45,7 +47,7 @@ module LogParse
         debug "Invoked with options #{options}"
         abort 'Must specify a log FILE to parse' if args.empty?
         logfile = File.open(args.first, 'r') # handle error
-        runner = self.new(logfile, options[:count], options[:filter])
+        runner = new(logfile, options[:count], options[:filter])
         runner.invoke
         display runner.results
       end
@@ -53,7 +55,7 @@ module LogParse
       def display(results)
         debug "Log parsing errors: #{results.delete(:errors)}"
         debug "Log lines filtered: #{results.delete(:filtered)}"
-        results.sort_by{ |key, val| - val }.each{ |key, val| puts "#{key}: #{val}" }
+        results.sort_by{ |_, val| - val }.each{ |key, val| puts "#{key}: #{val}" }
       end
     end
 

@@ -1,10 +1,8 @@
 module LogParse
+  # Parser class handles the log file pattern matching
   class Parser
-    attr_reader :pattern
-
-    def initialize
-      @pattern = Regexp.compile(
-        /
+    PATTERN = Regexp.compile(
+      /
         ^
         (?<timestamp>[^\s]+)
         \s
@@ -26,16 +24,15 @@ module LogParse
         \s
         (?<protocol>TLSv[\d.]+)
         $
-        /x
-      )
-    end
+      /x
+    )
 
     def fields
-      pattern.names
+      PATTERN.names
     end
 
     def extract(str)
-      match = pattern.match str
+      match = PATTERN.match str
       return {} if match.nil?
       Hash[match.names.map(&:to_sym).zip(match.captures)]
     end

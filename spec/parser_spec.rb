@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# rubocop:disable Metrics/LineLength, Metrics/BlockLength
 RSpec.describe LogParse::Parser do
   let(:example_one) do
     '2017-03-19T05:01:27.173Z 204.18.135.54:42860 10.31.0.5:8080 200 "GET https://api.chargeio.com:443/v1/events HTTP/1.1" "-" ECDHE-RSA-AES128-GCM-SHA256 TLSv1.2'
@@ -11,7 +12,8 @@ RSpec.describe LogParse::Parser do
 
   context '#fields' do
     it 'returns the field names' do
-      expect(subject.fields).to eq(%w[timestamp source_address source_port dest_address dest_port response_status http_request user_agent cipher protocol])
+      expect(subject.fields).to eq(%w[timestamp source_address source_port dest_address
+                                      dest_port response_status http_request user_agent cipher protocol])
     end
   end
 
@@ -31,7 +33,6 @@ RSpec.describe LogParse::Parser do
                                                  user_agent:      '"-"',
                                                  cipher:          'ECDHE-RSA-AES128-GCM-SHA256',
                                                  protocol:        'TLSv1.2')
-
     end
 
     it 'extracts the fields from example_two correctly' do
@@ -45,7 +46,6 @@ RSpec.describe LogParse::Parser do
                                                  user_agent:      '"ChargeIO PHP Client v1.0.0"',
                                                  cipher:          'AES256-SHA',
                                                  protocol:        'TLSv1')
-
     end
   end
 end
