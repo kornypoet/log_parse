@@ -1,0 +1,13 @@
+---
+LineLength:
+  Max: 120
+Style/FileName:
+  Enabled: false
+Style/NumericLiterals:
+  Enabled: false
+Style/Semicolon:
+  Enabled: false
+Style/SpaceBeforeBlockBraces:
+  EnforcedStyle: no_space
+Style/TrailingCommaInLiteral:
+  Enabled: false
