@@ -46,7 +46,7 @@ module LogParse
         args = optparse.parse!
         debug "Invoked with options #{options}"
         abort 'Must specify a log FILE to parse' if args.empty?
-        logfile = File.open(args.first, 'r') # handle error
+        logfile = File.open(args.first, 'r')
         runner = new(logfile, options[:count], options[:filter])
         runner.invoke
         display runner.results
