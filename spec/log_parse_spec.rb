@@ -30,7 +30,10 @@ RSpec.describe 'log_parse', type: :aruba do
   context 'log_parse spec/fixtures/example.log' do
     it 'outputs the results' do
       run_simple "log_parse #{logfile}"
-      expect(last_command_started).to have_output_on_stdout('52.34.86.123: 1')
+      expect(last_command_started).to have_output_on_stdout <<-STDOUT.gsub(/^ {8}/, '').chomp
+        125.45.1.14: 3
+        52.34.86.123: 1
+      STDOUT
     end
 
     it 'errors if not given a file' do
@@ -47,7 +50,11 @@ RSpec.describe 'log_parse', type: :aruba do
   context 'log_parse spec/fixtures/example.log -c dest_address' do
     it 'outputs the results with a different field count' do
       run_simple "log_parse #{logfile} -c dest_address"
-      expect(last_command_started).to have_output_on_stdout('10.0.12.108: 1')
+      expect(last_command_started).to have_output_on_stdout <<-STDOUT.gsub(/^ {8}/, '').chomp
+        10.0.12.108: 2
+        10.16.10.4: 1
+        10.31.0.5: 1
+      STDOUT
     end
 
     it 'errors if given an invalid field' do
@@ -59,7 +66,11 @@ RSpec.describe 'log_parse', type: :aruba do
   context 'log_parse spec/fixtures/example.log -f response_status=200' do
     it 'outputs the results with a different filter' do
       run_simple "log_parse #{logfile} -f response_status=200"
-      expect(last_command_started).to have_output_on_stdout("204.18.135.54: 1\n52.34.86.123: 1")
+      expect(last_command_started).to have_output_on_stdout <<-STDOUT.gsub(/^ {8}/, '').chomp
+        204.18.135.54: 4
+        125.45.1.14: 1
+        52.34.86.123: 1
+      STDOUT
     end
 
     it 'errors unless given a string formatted FIELD=VALUE' do
@@ -76,12 +87,15 @@ RSpec.describe 'log_parse', type: :aruba do
   context 'log_parse spec/fixtures/example.log --debug' do
     it 'outputs the results with additional debug information' do
       run_simple "log_parse #{logfile} --debug"
-      expect(last_command_started).to have_output_on_stdout('52.34.86.123: 1')
+      expect(last_command_started).to have_output_on_stdout <<-STDOUT.gsub(/^ {8}/, '').chomp
+        125.45.1.14: 3
+        52.34.86.123: 1
+      STDOUT
       expect(last_command_started).to have_output_on_stderr <<-STDERR.gsub(/^ {8}/, '').chomp
         Invoked with options {:count=>:source_address, :filter=>{:protocol=>"TLSv1"}, :debug=>true}
         Error parsing # these are a few randomly generated log lines to aid in testing
         Log parsing errors: 1
-        Log lines filtered: 1
+        Log lines filtered: 5
       STDERR
     end
   end
