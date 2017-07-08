@@ -32,6 +32,16 @@ RSpec.describe 'log_parse', type: :aruba do
       run_simple "log_parse #{logfile}"
       expect(last_command_started).to have_output_on_stdout('52.34.86.123: 1')
     end
+
+    it 'errors if not given a file' do
+      run 'log_parse'
+      expect(last_command_started).to have_output_on_stderr('Must specify a log FILE to parse')
+    end
+
+    it 'errors if the file is unreadable' do
+      run 'log_parse unreadable.log'
+      expect(last_command_started).to have_output_on_stderr(/No such file or directory/)
+    end
   end
 
   context 'log_parse spec/fixtures/example.log -c dest_address' do
@@ -39,12 +49,27 @@ RSpec.describe 'log_parse', type: :aruba do
       run_simple "log_parse #{logfile} -c dest_address"
       expect(last_command_started).to have_output_on_stdout('10.0.12.108: 1')
     end
+
+    it 'errors if given an invalid field' do
+      run "log_parse #{logfile} -c invalid"
+      expect(last_command_started).to have_output_on_stderr(/invalid argument: -c invalid/)
+    end
   end
 
   context 'log_parse spec/fixtures/example.log -f response_status=200' do
     it 'outputs the results with a different filter' do
       run_simple "log_parse #{logfile} -f response_status=200"
       expect(last_command_started).to have_output_on_stdout("204.18.135.54: 1\n52.34.86.123: 1")
+    end
+
+    it 'errors unless given a string formatted FIELD=VALUE' do
+      run "log_parse #{logfile} -f invalid"
+      expect(last_command_started).to have_output_on_stderr('Filter must be specified as FIELD=VALUE')
+    end
+
+    it 'errors if given an invalid field' do
+      run "log_parse #{logfile} -f invalid=200"
+      expect(last_command_started).to have_output_on_stderr('Filter FIELD invalid')
     end
   end
 
