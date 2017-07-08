@@ -23,7 +23,7 @@ Run tests
 bundle exec rake spec
 ```
 
-Run syntax check
+Run syntax checker
 
 ```
 bundle exec rake rubocop
@@ -36,8 +36,6 @@ bundle exec rake install
 ```
 
 ## Usage
-
-Help
 
 ```
 log_parse --help
