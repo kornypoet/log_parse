@@ -1,13 +1,4 @@
 #!/usr/bin/env ruby
-
 require 'log_parse'
-require 'optparse'
 
-options = {}
-
-optparse = OptionParser.new do |opts|
-  opts.version = LogParse::VERSION
-  opts.banner = 'Usage: log_parse [options] FILE'
-end
-
-LogParse::Runner.invoke! options
+LogParse::Runner.invoke!
