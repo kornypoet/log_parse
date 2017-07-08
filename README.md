@@ -35,6 +35,8 @@ Install log_parse locally
 bundle exec rake install
 ```
 
+If using rbenv, make sure to run `rbenv rehash` after install to add the executable to your `$PATH`. Otherwise, use `bundle exec exe/log_parse` and run from the repository root.
+
 ## Usage
 
 ```
@@ -45,7 +47,7 @@ Usage: log_parse [options] FILE
     -d, --debug                      Run in debug mode. Default false
 ```
 
-Basic usage if installed locally from above. If running from the repository root, use `bundle exec exe/log_parse`
+Basic usage
 
 ```
 log_parse spec/fixtures/example.log
