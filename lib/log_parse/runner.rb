@@ -29,6 +29,7 @@ module LogParse
           opts.on('-f', '--filter FIELD=VALUE', filter_desc) do |filter|
             field, value = filter.split('=')
             abort 'Filter must be specified as FIELD=VALUE' if [field, value].any?(&:nil?)
+            abort 'Filter FIELD invalid' unless LogParse::Parser.new.fields.include?(field)
             options[:filter] = { field.to_sym => value }
           end
 
@@ -52,9 +53,7 @@ module LogParse
       def display(results)
         debug "Log parsing errors: #{results.delete(:errors)}"
         debug "Log lines filtered: #{results.delete(:filtered)}"
-        results.sort_by{ |key, val| - val }.each do |key, val|
-          puts "#{key}: #{val}"
-        end
+        results.sort_by{ |key, val| - val }.each{ |key, val| puts "#{key}: #{val}" }
       end
     end
 
@@ -69,6 +68,10 @@ module LogParse
       @results = Hash.new(0)
     end
 
+    def add_to_results(field)
+      results[field] += 1
+    end
+
     def invoke
       logfile.each do |line|
         extracted = parser.extract(line.strip)
@@ -77,16 +80,12 @@ module LogParse
           add_to_results :errors
           next
         end
-        if extracted[filter_field] == filter_value
+        if extracted[filter_field] != filter_value
           add_to_results :filtered
           next
         end
         add_to_results extracted[count_field]
       end
-    end
-
-    def add_to_results(field)
-      results[field] += 1
     end
   end
 end
